@@ -82,7 +82,7 @@ SUBROUTINE get_mat1(mat1_out, m, n)
   implicit none
 
   integer(4), intent(in)  :: m, n
-  real(8), intent(out)  :: mat1_out(0:m-1, 0:n-1)
+  real(8), intent(out)  :: mat1_out(1:m, 1:n)
 
   mat1_out = mat1
   
@@ -93,7 +93,7 @@ SUBROUTINE get_mat2(mat2_out, m, n)
   implicit none
 
   integer(4), intent(in)  :: m, n
-  real(8), intent(out)  :: mat2_out(0:m-1, 0:n-1)
+  real(8), intent(out)  :: mat2_out(1:m, 1:n)
 
   mat2_out = mat2
   
@@ -106,9 +106,6 @@ SUBROUTINE get_mat3(mat3_out, m, n)
 
   integer(4), intent(in)  :: m, n
   real(8), intent(out)  :: mat3_out(1:m, 1:n)
-  real(8)  :: tmp(1:m, 1:n)
-  !mat3 = 0
-  !write(*, *) m, n
-  !tmp = mat3
-  !mat3_out = mat3  
+
+  mat3_out = mat3  
 end
