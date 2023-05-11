@@ -51,3 +51,33 @@ SUBROUTINE matrix_eigen( handle, A, n, W, devinfo)
   return
 end
 
+
+
+SUBROUTINE matrix_svd( handle, A, m, n, S,U, VT, devinfo)
+
+  use cusolverDn
+  use cudafor
+ 
+  implicit none
+
+  type(cusolverDnHandle), intent(in) :: handle
+  integer(4), intent(in)  :: m, n
+  integer(4) :: lwork
+  real(8), dimension(1:m, 1:n), device  :: A
+  real(8), dimension(1:m, 1:m), device  :: U
+  real(8), dimension(1:n, 1:n), device  :: VT
+  real(8), dimension(1:n), device  :: S
+
+  real(8), dimension(:), allocatable, device   :: work_space, rwork
+
+  integer(4), device :: devinfo
+  integer                 :: stat
+
+  stat = cusolverDnDgesvd_buffersize(handle, m, n, lwork)
+  allocate( work_space(1:lwork) )
+  allocate( rwork(1:lwork) )
+  
+  stat = cusolverDnDgesvd(handle,'A', 'A', m, n, A, m, S, U, m, VT, m, work_space, lwork, rwork, devinfo)
+  return
+end
+

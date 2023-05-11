@@ -21,3 +21,14 @@ SUBROUTINE mat1_eigen()
   call matrix_eigen( cusolver_handle, mat1, m1, W1, devinfo1)
   
 end
+
+
+! mat 1 X mat 2 --> mat3
+SUBROUTINE mat1_svd()
+  use matrix_data_module
+
+  implicit none
+
+  call matrix_svd( cusolver_handle, mat1, m1, n1, S1, U1, VT1, devinfo1)
+  
+end

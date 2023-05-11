@@ -1,15 +1,17 @@
 
-SUBROUTINE init()
+SUBROUTINE init(use_svd_in)
   use matrix_data_module
   use cublas_v2
   use cusolverDn
   implicit none
 
-  integer(4) :: stat
+  integer(4) :: stat, use_svd_in
   stat = cublasCreate(handle)
   stat = cublasSetPointerMode(handle, CUBLAS_POINTER_MODE_DEVICE)
 
   stat = cusolverDnCreate(cusolver_handle)
+  use_svd = use_svd_in
+     
 end
 
 SUBROUTINE set_mat1(mat1_in, m, n)
@@ -25,6 +27,12 @@ SUBROUTINE set_mat1(mat1_in, m, n)
      
      allocate( mat1(1:m, 1:n) )
      if(m.eq.n) allocate( W1(1:m) )
+
+     if(use_svd .gt. 0) then
+        allocate(S1(1:m))
+        allocate(U1(1:m, 1:m))
+        allocate(VT1(1:n, 1:n))
+     end if
   endif
   
   m1 = m
@@ -48,6 +56,12 @@ SUBROUTINE set_mat2(mat2_in, m, n)
      
      allocate( mat2(1:m, 1:n) )
      if(m.eq.n) allocate( W2(1:m) )
+     if(use_svd .gt. 0) then
+        allocate(S2(1:m))
+        allocate(U2(1:m, 1:m))
+        allocate(VT2(1:n, 1:n))
+     end if
+
   endif
 
   
@@ -71,6 +85,12 @@ SUBROUTINE set_mat3(mat3_in, m, n)
      
      allocate( mat3(1:m, 1:n) )
      if(m.eq.n) allocate( W3(1:m) )
+     if(use_svd .gt. 0) then
+        allocate(S3(1:m))
+        allocate(U3(1:m, 1:m))
+        allocate(VT3(1:n, 1:n))
+     end if
+
   endif
 
   
@@ -146,4 +166,33 @@ SUBROUTINE get_w3(W3_out, m)
   W3_out = W3  
 end
 
+SUBROUTINE get_s1(S1_out, m)
+  use matrix_data_module
+  implicit none
+
+  integer(4), intent(in)  :: m
+  real(8), intent(out)  :: S1_out(1:m)
+
+  S1_out = S1
+end
+
+SUBROUTINE get_u1(U1_out, m, n)
+  use matrix_data_module
+  implicit none
+
+  integer(4), intent(in)  :: m, n
+  real(8), intent(out)  :: U1_out(1:m, 1:n)
+
+  U1_out = U1
+end
+
+SUBROUTINE get_vt1(VT1_out, m, n)
+  use matrix_data_module
+  implicit none
+
+  integer(4), intent(in)  :: m, n
+  real(8), intent(out)  :: VT1_out(1:m, 1:n)
+
+  VT1_out = VT1
+end
 
