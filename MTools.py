@@ -61,8 +61,20 @@ class MTools:
         #print(mat3)
         return mat3
 
+
+    def get_W1(self):
+        m = MT.matrix_data_module.m1
+        W1 = np.ones((m), order='F')
+        MT.get_w1(W1, m)
+        return W1
+
     
     def mm12(self):
         MT.mm12()
+        return
+
+    def m1_eigen(self):
+
+        MT.mat1_eigen()
         return
 

@@ -23,4 +23,4 @@ cp *.mod src/
 
 f90wrap -m MT -k src/kind_map  src/matrix_main.f90 src/matrix_data_init.f90 src/matrix_data_module.f90
 
-LDFLAGS="-cpp -Mcuda -acc -Mcudalib=cublas -fPIC -lcufft -pgf90libs " f2py-f90wrap --fcompiler=nv -c -m _MT f90wrap_*.f90 --f90flags="-cpp -acc -Mcuda -Mcudalib=cublas -pgf90libs" *.a
+LDFLAGS="-cpp -Mcuda -acc -Mcudalib=cublas,cusolver -fPIC -lcufft -pgf90libs " f2py-f90wrap --fcompiler=nv -c -m _MT f90wrap_*.f90 --f90flags="-cpp -acc -Mcuda -Mcudalib=cublas, cusolver -pgf90libs" *.a

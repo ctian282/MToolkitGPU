@@ -15,7 +15,7 @@ file(GLOB MTOOLS_SOURCES src/matrix_data_module.f90 src/matrix_main.f90 src/matr
 
 
 message("Will compile with GPU (supported by openacc)")
-set(CMAKE_Fortran_FLAGS "-fPIC -O3 -fopenmp -Mcuda -Mcudalib=cublas -lcufft -acc -fast -cpp")
+set(CMAKE_Fortran_FLAGS "-fPIC -O3 -fopenmp -Mcuda -Mcudalib=cublas, cusolver -lcufft -acc -fast -cpp")
 
 
 add_library(MTools_fort STATIC ${MTOOLS_SOURCES})

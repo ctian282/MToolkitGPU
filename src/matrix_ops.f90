@@ -19,11 +19,35 @@ SUBROUTINE matrix_mul( handle, mat1, mat2, mat3, m, k, n, alpha, beta)
   !stat = cudaStreamCreate(stream)
   !stat = cublasSetStream(handle, stream)
 
-  !write(*, *) m, k, n, alpha, beta
-  stat = cudaDeviceSynchronize()
   stat = cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, m, n, k, alpha, mat1(:,1), m, mat2(:,1), k, beta, mat3(:,1), m)
   
   return
 end
 
+
+
+SUBROUTINE matrix_eigen( handle, A, n, W, devinfo)
+
+  use cusolverDn
+  use cudafor
+ 
+  implicit none
+
+  type(cusolverDnHandle), intent(in) :: handle
+  integer(4), intent(in)  :: n
+  integer(4) :: lwork
+  real(8), dimension(1:n, 1:n), device  :: A
+  real(8), dimension(1:n), device  :: W
+
+  real(8), dimension(:), allocatable, device   :: work_space
+
+  integer(4), device :: devinfo
+  integer                 :: stat
+
+  stat = cusolverDnDsyevd_buffersize(handle, CUSOLVER_EIG_MODE_VECTOR, CUBLAS_FILL_MODE_LOWER, n, A, n, W, lwork)
+  allocate( work_space(1:lwork) )
+  
+  stat = cusolverDnDsyevd(handle, CUSOLVER_EIG_MODE_VECTOR, CUBLAS_FILL_MODE_LOWER, n, A, n, W, work_space, lwork, devinfo)
+  return
+end
 
